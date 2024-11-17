@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config
+data:
+  MONGO_INITDB_ROOT_USERNAME: ''
+  MONGO_INITDB_ROOT_PASSWORD: ''
+  MONGO_INITDB_DATABASE: ''
+  MONGO_USERNAME: ''
+  MONGO_PASSWORD: ''
+  init-mongo.js: |
+    db = db.getSiblingDB(process.env.MONGO_INITDB_DATABASE || "realtime-posts");
+
+    db.createUser({
+      user: process.env.MONGO_USERNAME || "realtime-posts",
+      pwd: process.env.MONGO_PASSWORD || "relatime-posts",
+      roles: [
+        {
+          role: "readWrite",
+          db: process.env.MONGO_INITDB_DATABASE || "realtime-posts"
+        }
+      ]
+    });

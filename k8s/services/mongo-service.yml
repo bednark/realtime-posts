@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: default
+  labels:
+    app: realtime-posts
+    component: mongo-service
+spec:
+  selector:
+    app: realtime-posts
+    component: mongo
+  ports:
+  - port: 27017
+    targetPort: 27017

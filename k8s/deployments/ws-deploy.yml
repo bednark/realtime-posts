@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime-posts-ws
+  labels:
+    app: realtime-posts
+    component: ws
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: realtime-posts
+      component: ws
+  template:
+    metadata:
+      labels:
+        app: realtime-posts
+        component: ws
+    spec:
+      containers:
+      - name: realtime-posts-ws
+        image: realtime-posts/ws
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 4000

@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ws-service
+  namespace: default
+  labels:
+    app: realtime-posts
+    component: ws-service
+spec:
+  selector:
+    app: realtime-posts
+    component: ws
+  ports:
+  - port: 4000
+    targetPort: 4000
+  type: LoadBalancer

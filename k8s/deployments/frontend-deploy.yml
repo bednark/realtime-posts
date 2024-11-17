@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime-posts-frontend
+  labels:
+    app: realtime-posts
+    component: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: realtime-posts
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: realtime-posts
+        component: frontend
+    spec:
+      containers:
+      - name: realtime-posts-frontend
+        image: realtime-posts/frontend
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: WS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: frontend-config
+                key: WS_URL
+          - name: MONGO_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: mongo-config
+                key: MONGO_USERNAME
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: MONGO_PASSWORD
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 3000
