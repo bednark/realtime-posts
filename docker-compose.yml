@@ -1,0 +1,34 @@
+services:
+  frontend:
+    image: realtime-posts/frontend
+    container_name: frontend-1
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - WS_URL=ws://192.168.10.3:4000
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+    depends_on:
+      - ws
+      - mongodb
+  ws:
+    image: realtime-posts/ws
+    container_name: ws
+    restart: unless-stopped
+    ports:
+      - 4000:4000
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
